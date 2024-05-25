@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Online HTML Editor</title>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+  <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+  <h1>Qr code scanner go</h1>
+  <div>
+    <div>
+      <video id="preview" width="100%" autoplay></video>
+    </div>
+    <div>
+      <label>Scan result:</label>
+      <input id="text" type="text" readonly>
+    </div>
+  </div>
+
+  <script>
+    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+    Instascan.Camera.getCameras().then(function(cameras){
+      if(cameras.length > 0){
+        scanner.start(cameras[0]);
+      }else{
+        alert('No cameras found');
+      }
+    }).catch(function(e){
+      console.error(e);
+    });
+    scanner.addListener('scan',function(content){
+      document.getElementById('text').value = content;
+    });
+  </script>
+</body>
+</html>
